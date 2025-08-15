@@ -5,7 +5,7 @@ import { Nunito } from "next/font/google"
 import "./globals.css"
 
 export const metadata: Metadata = {
-  title: "v0 App",
+  title: "Monyet AI",
   description: "Created with v0",
   generator: "v0.app",
 }
