@@ -1,103 +1,180 @@
-import Image from "next/image";
+"use client"
 
-export default function Home() {
-  return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+import { useState } from "react"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+type SkillLevel = "unskilled" | "skilled" | "idk" | "entrepreneur" | null
+
+export default function SkillSelector() {
+  const [selectedChoice, setSelectedChoice] = useState<SkillLevel>(null)
+  const [showSurvey, setShowSurvey] = useState(false)
+
+  const choices = [
+    {
+      id: "unskilled" as const,
+      title: "1️⃣ Unskilled",
+      description: "I don't have formal qualifications or experience 🌱",
+      icon: "🐒",
+    },
+    {
+      id: "skilled" as const,
+      title: "2️⃣ Skilled",
+      description: "I have a specific trade, technical skill, or profession 🔧",
+      icon: "🐵🔧",
+    },
+    {
+      id: "idk" as const,
+      title: "3️⃣ IDK",
+      description: "I'm not sure what category I fit in 🤔",
+      icon: "🙈",
+    },
+    {
+      id: "entrepreneur" as const,
+      title: "4️⃣ Entrepreneur",
+      description: "I want to start or grow a business 🚀",
+      icon: "🐵💼",
+    },
+  ]
+
+  const handleChoice = (choice: SkillLevel) => {
+    setSelectedChoice(choice)
+    // Simulate transition to survey stage
+    setTimeout(() => {
+      setShowSurvey(true)
+    }, 1000)
+  }
+
+  const handleAgentClick = () => {
+    window.open("https://example.com/agent", "_blank")
+  }
+
+  const getChoiceLabel = (choice: SkillLevel) => {
+    const choiceMap = {
+      unskilled: "Unskilled 🐒",
+      skilled: "Skilled 🐵🔧",
+      idk: "IDK 🙈",
+      entrepreneur: "Entrepreneur 🐵💼",
+    }
+    return choice ? choiceMap[choice] : ""
+  }
+
+  if (showSurvey) {
+    return (
+      <div className="min-h-screen bg-[#007bff] flex items-center justify-center p-4 relative overflow-hidden">
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-10 left-10 text-6xl float-animation opacity-20">🎉</div>
+          <div className="absolute top-20 right-20 text-4xl float-reverse-animation opacity-30">⭐</div>
+          <div className="absolute bottom-20 left-20 text-5xl float-animation opacity-25">🚀</div>
+          <div className="absolute bottom-10 right-10 text-3xl float-reverse-animation opacity-20">✨</div>
+          <div className="absolute top-1/2 left-5 text-4xl float-animation opacity-15">🎯</div>
+          <div className="absolute top-1/3 right-5 text-5xl float-reverse-animation opacity-20">💫</div>
+          <div className="absolute top-1/4 left-1/3 text-3xl float-animation opacity-20">💻</div>
+          <div className="absolute bottom-1/3 right-1/4 text-4xl float-reverse-animation opacity-15">🏗️</div>
+          <div className="absolute top-2/3 right-10 text-3xl float-animation opacity-25">👩‍💼</div>
+          <div className="absolute bottom-1/4 left-10 text-4xl float-reverse-animation opacity-20">🔨</div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+
+        <Card className="w-full max-w-md bg-gradient-to-br from-white to-gray-50 border-4 border-white shadow-2xl relative z-10 rounded-2xl">
+          <CardHeader className="text-center">
+            <CardTitle className="text-3xl text-[#007bff] font-bold">🎉 Great Choice! 🎉</CardTitle>
+            <CardDescription className="text-gray-800 text-lg">
+              You selected:{" "}
+              <span className="font-bold text-[#ffdd00] bg-[#007bff] px-2 py-1 rounded-full">
+                {getChoiceLabel(selectedChoice)}
+              </span>
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="text-center">
+            <p className="text-gray-700 mb-6 text-lg">Now transitioning to the survey stage... ✨</p>
+            <div className="animate-spin w-10 h-10 border-4 border-[#ffdd00] border-t-transparent rounded-full mx-auto"></div>
+          </CardContent>
+        </Card>
+      </div>
+    )
+  }
+
+  return (
+    <div className="min-h-screen bg-[#007bff] flex items-center justify-center p-4 relative overflow-hidden">
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-10 left-10 text-6xl float-animation opacity-20">👷‍♂️</div>
+        <div className="absolute top-20 right-20 text-4xl float-reverse-animation opacity-30">💻</div>
+        <div className="absolute bottom-20 left-20 text-5xl float-diagonal-animation opacity-25">🔧</div>
+        <div className="absolute bottom-10 right-10 text-3xl float-animation opacity-20">📊</div>
+        <div className="absolute top-1/2 left-5 text-4xl float-reverse-animation opacity-15">💼</div>
+        <div className="absolute top-1/3 right-5 text-5xl float-diagonal-animation opacity-20">🏗️</div>
+        <div className="absolute top-3/4 left-1/4 text-3xl float-animation opacity-25">🚀</div>
+        <div className="absolute top-1/4 right-1/3 text-4xl float-reverse-animation opacity-15">⚡</div>
+        <div className="absolute bottom-1/3 left-1/3 text-3xl float-diagonal-animation opacity-20">👩‍💼</div>
+        <div className="absolute top-1/6 left-2/3 text-4xl float-animation opacity-25">🔨</div>
+        <div className="absolute bottom-1/2 right-1/3 text-3xl float-reverse-animation opacity-15">👨‍🔬</div>
+        <div className="absolute top-2/3 right-1/4 text-4xl float-diagonal-animation opacity-20">🏭</div>
+        <div className="absolute bottom-1/6 left-1/2 text-3xl float-animation opacity-25">📈</div>
+        <div className="absolute top-1/3 left-1/6 text-4xl float-reverse-animation opacity-15">🎨</div>
+        <div className="absolute bottom-2/3 right-1/6 text-4xl float-diagonal-animation opacity-20">🍳</div>
+        <div className="absolute top-5 left-1/2 text-3xl float-animation opacity-15">👨‍💻</div>
+        <div className="absolute top-1/4 left-5 text-4xl float-reverse-animation opacity-20">🏥</div>
+        <div className="absolute bottom-5 right-1/2 text-3xl float-diagonal-animation opacity-15">✈️</div>
+        <div className="absolute top-3/4 right-5 text-4xl float-animation opacity-20">🎭</div>
+        <div className="absolute top-1/2 left-1/4 text-3xl float-reverse-animation opacity-15">📚</div>
+        <div className="absolute bottom-1/4 right-2/3 text-4xl float-diagonal-animation opacity-20">🎵</div>
+        <div className="absolute top-1/6 right-1/2 text-3xl float-animation opacity-15">🔬</div>
+        <div className="absolute bottom-3/4 left-3/4 text-4xl float-reverse-animation opacity-20">⚖️</div>
+        <div className="absolute top-2/3 left-1/6 text-3xl float-diagonal-animation opacity-15">🌱</div>
+        <div className="absolute bottom-1/3 right-1/6 text-4xl float-animation opacity-20">🎯</div>
+        <div className="absolute top-1/5 left-3/4 text-3xl float-reverse-animation opacity-15">💡</div>
+        <div className="absolute bottom-2/3 left-1/3 text-4xl float-diagonal-animation opacity-20">🎪</div>
+        <div className="absolute top-4/5 right-1/3 text-3xl float-animation opacity-15">🏆</div>
+        <div className="absolute bottom-1/4 left-2/3 text-4xl float-reverse-animation opacity-20">🎲</div>
+        <div className="absolute top-1/2 right-1/6 text-3xl float-diagonal-animation opacity-15">🎸</div>
+      </div>
+
+      <div className="w-full max-w-2xl relative z-10">
+        <div className="text-center mb-8">
+          <h1 className="text-4xl font-bold mb-4 text-white">✨ What describes you best? ✨</h1>
+          <p className="text-white text-xl">Select the option that best matches your current situation 👇</p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {choices.map((choice) => (
+            <Card
+              key={choice.id}
+              className={`cursor-pointer transition-all hover:shadow-2xl hover:scale-105 bg-gradient-to-br from-blue-50 to-white border-4 border-white shadow-xl rounded-2xl ${
+                selectedChoice === choice.id ? "ring-4 ring-[#ffdd00] shadow-2xl transform scale-105" : ""
+              }`}
+              onClick={() => handleChoice(choice.id)}
+            >
+              <CardHeader className="text-center pb-3">
+                <div className="text-5xl mb-3">{choice.icon}</div>
+                <CardTitle className="text-2xl text-[#007bff] font-bold">
+                  <span className="text-[#ffdd00] font-extrabold text-3xl mr-2">{choice.title.split(" ")[0]}</span>
+                  {choice.title.split(" ").slice(1).join(" ")}
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="text-center">
+                <CardDescription className="text-base leading-relaxed text-gray-700 font-medium">
+                  {choice.description}
+                </CardDescription>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+
+        {selectedChoice && (
+          <div className="text-center mt-8">
+            <p className="text-lg text-white">🔄 Acknowledging your choice and preparing survey... 🎯</p>
+          </div>
+        )}
+      </div>
+
+      {/* Added small floating agent in bottom right corner */}
+      <div
+        className="fixed bottom-6 right-6 z-20 cursor-pointer transition-all hover:scale-110"
+        onClick={handleAgentClick}
+      >
+        <div className="bg-white rounded-full p-3 shadow-lg border-2 border-[#ffdd00] hover:shadow-xl">
+          <div className="text-3xl animate-bounce">🐵👋</div>
+        </div>
+      </div>
     </div>
-  );
+  )
 }
