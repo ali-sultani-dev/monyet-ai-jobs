@@ -1,13 +1,45 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+
+// Declare the custom element for TypeScript
+declare global {
+    namespace JSX {
+        interface IntrinsicElements {
+            'elevenlabs-convai': {
+                'agent-id': string;
+                children?: React.ReactNode;
+            }
+        }
+    }
+}
 
 type SkillLevel = "unskilled" | "skilled" | "idk" | "entrepreneur" | null
 
 export default function SkillSelector() {
   const [selectedChoice, setSelectedChoice] = useState<SkillLevel>(null)
   const [showSurvey, setShowSurvey] = useState(false)
+
+  useEffect(() => {
+    // Load the ElevenLabs ConvAI script
+    const script = document.createElement('script')
+    script.src = 'https://unpkg.com/@elevenlabs/convai-widget-embed'
+    script.async = true
+    script.type = 'text/javascript'
+    document.body.appendChild(script)
+
+    return () => {
+      // Cleanup script on unmount
+      try {
+        if (script && document.body.contains(script)) {
+          document.body.removeChild(script)
+        }
+      } catch (error) {
+        console.log('Script cleanup error:', error)
+      }
+    }
+  }, [])
 
   const choices = [
     {
@@ -38,15 +70,21 @@ export default function SkillSelector() {
 
   const handleChoice = (choice: SkillLevel) => {
     setSelectedChoice(choice)
-    // Simulate transition to survey stage
-    setTimeout(() => {
-      setShowSurvey(true)
-    }, 1000)
+    
+    if (choice === "unskilled") {
+      // Redirect to unskilled chat page
+      setTimeout(() => {
+        window.location.href = "/unskilled-chat"
+      }, 1000)
+    } else {
+      // Simulate transition to survey stage for other choices
+      setTimeout(() => {
+        setShowSurvey(true)
+      }, 1000)
+    }
   }
 
-  const handleAgentClick = () => {
-    window.open("https://example.com/agent", "_blank")
-  }
+
 
   const getChoiceLabel = (choice: SkillLevel) => {
     const choiceMap = {
@@ -166,14 +204,11 @@ export default function SkillSelector() {
         )}
       </div>
 
-      {/* Added small floating agent in bottom right corner */}
-      <div
-        className="fixed bottom-6 right-6 z-20 cursor-pointer transition-all hover:scale-110"
-        onClick={handleAgentClick}
-      >
-        <div className="bg-white rounded-full p-3 shadow-lg border-2 border-[#ffdd00] hover:shadow-xl">
-          <div className="text-3xl animate-bounce">🐵👋</div>
-        </div>
+
+
+      {/* ElevenLabs ConvAI widget */}
+      <div className="fixed bottom-5 right-5 z-[1000]">
+        <elevenlabs-convai agent-id="agent_7901k2qzw9cgekfvm4vtdj4dp5fb"></elevenlabs-convai>
       </div>
     </div>
   )
