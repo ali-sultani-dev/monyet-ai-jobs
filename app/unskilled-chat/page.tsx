@@ -48,6 +48,17 @@ export default function UnskilledChat() {
                 />
             </div>
 
+            {/* Text bubble above ElevenLabs ConvAI widget */}
+            <div className="fixed bottom-24 right-5 z-[1000]">
+                <div className="bg-white text-gray-800 px-4 py-3 rounded-2xl shadow-lg border-2 border-[#007bff] max-w-xs relative">
+                    <div className="text-sm font-medium text-center">
+                        Hi, talk to me if you need any assistant! 💬
+                    </div>
+                    {/* Arrow pointing down to the widget */}
+                    <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-[#007bff]"></div>
+                </div>
+            </div>
+
             {/* ElevenLabs ConvAI widget in corner */}
             <div className="fixed bottom-5 right-5 z-[1000]">
                 <div 
